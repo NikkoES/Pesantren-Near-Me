@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activity.SettingsActivity">
+
+    <LinearLayout
+        android:id="@+id/btn_set_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_settings_green" />
+
+        <TextView
+            android:id="@+id/txt_radius"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:textColor="@color/textColorBlack"
+            android:textSize="16sp"
+            tools:text="Pilih Radius (m) - 10000" />
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_arrow_right" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/textColorBlack" />
+
+    <LinearLayout
+        android:id="@+id/btn_set_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_settings_green" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="Jarak"
+            android:textColor="@color/textColorBlack"
+            android:textSize="16sp" />
+
+        <ToggleButton
+            android:id="@+id/toggle_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="mil"
+            android:textOn="km" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/textColorBlack" />
+
+    <LinearLayout
+        android:id="@+id/layout_nb_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <NumberPicker
+            android:id="@+id/nb_radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp" />
+
+        <Button
+            android:id="@+id/btn_selesai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Selesai"
+            android:textColor="@color/textColorWhite"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

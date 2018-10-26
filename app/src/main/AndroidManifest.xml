@@ -33,6 +33,7 @@
         <activity android:name=".activity.DetailPesantrenActivity" />
         <activity android:name=".activity.AliranPesantrenActivity" />
         <activity android:name=".activity.LokasiPesantrenActivity" />
+        <activity android:name=".activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

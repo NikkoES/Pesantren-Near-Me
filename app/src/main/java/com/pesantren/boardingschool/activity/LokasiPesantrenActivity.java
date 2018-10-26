@@ -103,7 +103,7 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
             pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLongitude()));
 
             float distance = myLocation.distanceTo(pesantrenLocation);
-            float radius = Float.parseFloat(pref.getString("radius", "1000")); //default 1km
+            float radius = pref.getInt("radius", 10000);
 
             if(listPesantren.get(i).getAliran().equalsIgnoreCase(getIntent().getStringExtra("aliran")) && distance < radius){
                 listAliranPesantren.add(listPesantren.get(i));

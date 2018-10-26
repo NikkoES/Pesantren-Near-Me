@@ -174,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLongitude()));
 
             float distance = myLocation.distanceTo(pesantrenLocation);
-            float radius = Float.parseFloat(pref.getString("radius", "1000")); //default 1km
+            float radius = pref.getInt("radius",10000);
 
             if(distance < radius){
                 LatLng lokasiPesantren = new LatLng(Double.parseDouble(pesantren.getLatitude()), Double.parseDouble(pesantren.getLongitude()));

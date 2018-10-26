@@ -62,7 +62,7 @@ public class PesantrenAdapter extends RecyclerView.Adapter<PesantrenAdapter.View
                 Double.parseDouble(pesantren.getLatitude()), Double.parseDouble(pesantren.getLongitude())));
         float distanceEuclidean = convertTwo(myLocation.distanceTo(pesantrenLocation) / 1000);
 
-        if(pref.getString("satuan", "").equalsIgnoreCase("km")){
+        if(pref.getBoolean("distance", true)){
             holder.txtJarakPesantren.setText(distanceEuclidean + " km | " + distanceHarversine + " km");
         }
         else{

@@ -30,19 +30,19 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.btn_peta, R.id.btn_kategori, R.id.btn_bantuan, R.id.btn_tentang})
-    public void actionButton(View v){
-        switch (v.getId()){
-            case R.id.btn_peta :
+    @OnClick({R.id.btn_peta, R.id.btn_kategori, R.id.btn_berita, R.id.btn_tentang})
+    public void actionButton(View v) {
+        switch (v.getId()) {
+            case R.id.btn_peta:
                 startActivity(new Intent(this, MapsActivity.class));
                 break;
-            case R.id.btn_kategori :
+            case R.id.btn_kategori:
                 startActivity(new Intent(this, AliranPesantrenActivity.class));
                 break;
-            case R.id.btn_bantuan :
+            case R.id.btn_berita:
                 Toast.makeText(this, "On Development", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btn_tentang :
+            case R.id.btn_tentang:
                 Toast.makeText(this, "On Development", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -56,55 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final Intent i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        switch(item.getItemId()){
-            case R.id.nav_km :
-                setSatuanPref("km");
-                startActivity(i);
-                break;
-            case R.id.nav_mile :
-                setSatuanPref("mile");
-                startActivity(i);
-                break;
-            case R.id.nav_radius :
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Masukkan Radius (KM) :");
-
-                final EditText etRadius = new EditText(MainActivity.this);
-                builder.setView(etRadius);
-
-                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.setPositiveButton("SET", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!TextUtils.isEmpty(etRadius.getText().toString())){
-                            setRadiusPref(""+Integer.parseInt(etRadius.getText().toString()) * 1000);
-                            startActivity(i);
-                        }
-                    }
-                });
-                builder.show();
+        switch (item.getItemId()) {
+            case R.id.nav_settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
         }
         return true;
     }
-
-    public void setSatuanPref(String satuan){
-        SharedPreferences.Editor editor = getSharedPreferences("setting", MODE_PRIVATE).edit();
-        editor.putString("satuan", satuan);
-        editor.apply();
-    }
-
-    public void setRadiusPref(String radius){
-        SharedPreferences.Editor editor = getSharedPreferences("setting", MODE_PRIVATE).edit();
-        editor.putString("radius", radius);
-        editor.apply();
-    }
-
-
 }
