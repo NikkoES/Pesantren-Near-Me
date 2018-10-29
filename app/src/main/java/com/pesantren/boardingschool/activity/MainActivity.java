@@ -1,25 +1,21 @@
 package com.pesantren.boardingschool.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pesantren.boardingschool.R;
+import com.pesantren.boardingschool.activity.about.AboutActivity;
+import com.pesantren.boardingschool.activity.berita.BeritaActivity;
+import com.pesantren.boardingschool.activity.kategori.AliranPesantrenActivity;
+import com.pesantren.boardingschool.activity.maps.MapsActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.internal.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AliranPesantrenActivity.class));
                 break;
             case R.id.btn_berita:
-                Toast.makeText(this, "On Development", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, BeritaActivity.class));
                 break;
             case R.id.btn_tentang:
-                Toast.makeText(this, "On Development", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
     }

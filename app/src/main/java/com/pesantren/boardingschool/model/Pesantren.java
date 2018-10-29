@@ -6,12 +6,13 @@ import java.io.Serializable;
 
 public class Pesantren implements Serializable {
 
-    String namaPesantren, aliran, alamat, latitude, longitude, image;
+    String namaPesantren, aliran, alamat, telp, latitude, longitude, image;
 
-    public Pesantren(String namaPesantren, String aliran, String alamat, String latitude, String longitude, String image) {
+    public Pesantren(String namaPesantren, String aliran, String alamat, String telp, String latitude, String longitude, String image) {
         this.namaPesantren = namaPesantren;
         this.aliran = aliran;
         this.alamat = alamat;
+        this.telp = telp;
         this.latitude = latitude;
         this.longitude = longitude;
         this.image = image;
@@ -27,6 +28,10 @@ public class Pesantren implements Serializable {
 
     public String getAlamat() {
         return alamat;
+    }
+
+    public String getTelp() {
+        return telp;
     }
 
     public String getLatitude() {

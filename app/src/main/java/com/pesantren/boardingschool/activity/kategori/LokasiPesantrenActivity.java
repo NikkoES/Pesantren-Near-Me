@@ -1,4 +1,4 @@
-package com.pesantren.boardingschool.activity;
+package com.pesantren.boardingschool.activity.kategori;
 
 import android.Manifest;
 import android.app.Activity;
@@ -88,14 +88,14 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
     }
 
     private void initPesantrenData() {
-        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "-6.92746", "107.71706", ""));
-        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung", "-6.93760", "107.72246", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung", "-6.93972", "107.71205", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung", "-6.92775", "107.73265", ""));
-        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung", "-6.92937", "107.71878", ""));
-        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707", "107.72376", ""));
+        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "08226227436", "-6.92746", "107.71706", ""));
+        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung", "08988190546", "-6.93760", "107.72246", ""));
+        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung", "08965552374", "-6.93972", "107.71205", ""));
+        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung", "0857826893", "-6.92775", "107.73265", ""));
+        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung", "0899471774", "-6.92937", "107.71878", ""));
+        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707", "08787765473", "107.72376", ""));
 
-        for(int i=0;i<listPesantren.size();i++){
+        for (int i = 0; i < listPesantren.size(); i++) {
             final Pesantren pesantren = listPesantren.get(i);
 
             Location pesantrenLocation = new Location("");
@@ -105,7 +105,7 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
             float distance = myLocation.distanceTo(pesantrenLocation);
             float radius = pref.getInt("radius", 10000);
 
-            if(listPesantren.get(i).getAliran().equalsIgnoreCase(getIntent().getStringExtra("aliran")) && distance < radius){
+            if (listPesantren.get(i).getAliran().equalsIgnoreCase(getIntent().getStringExtra("aliran")) && distance < radius) {
                 listAliranPesantren.add(listPesantren.get(i));
             }
         }
@@ -119,8 +119,8 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home : {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
                 finish();
                 break;
             }

@@ -1,4 +1,4 @@
-package com.pesantren.boardingschool.activity;
+package com.pesantren.boardingschool.activity.kategori;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

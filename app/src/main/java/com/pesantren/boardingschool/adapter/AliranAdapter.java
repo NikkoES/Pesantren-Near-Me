@@ -7,14 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
-import com.pesantren.boardingschool.activity.LokasiPesantrenActivity;
+import com.pesantren.boardingschool.activity.kategori.LokasiPesantrenActivity;
 
-import java.lang.reflect.Member;
 import java.util.List;
 
 import butterknife.BindView;

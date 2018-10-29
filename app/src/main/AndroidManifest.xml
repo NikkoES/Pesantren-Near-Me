@@ -29,11 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MapsActivity" />
-        <activity android:name=".activity.DetailPesantrenActivity" />
-        <activity android:name=".activity.AliranPesantrenActivity" />
-        <activity android:name=".activity.LokasiPesantrenActivity" />
-        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity android:name=".activity.maps.MapsActivity" />
+        <activity android:name=".activity.maps.DetailPesantrenActivity" />
+        <activity android:name=".activity.kategori.AliranPesantrenActivity" />
+        <activity android:name=".activity.kategori.LokasiPesantrenActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.about.AboutActivity" />
+        <activity android:name=".activity.berita.BeritaActivity" />
+        <activity android:name=".activity.berita.DetailBeritaActivity"></activity>
     </application>
 
 </manifest>

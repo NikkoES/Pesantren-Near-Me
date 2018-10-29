@@ -1,4 +1,4 @@
-package com.pesantren.boardingschool.activity;
+package com.pesantren.boardingschool.activity.maps;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,16 +34,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.model.Pesantren;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +53,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Manifest.permission.ACCESS_FINE_LOCATION};
 
     LocationManager locationManager;
-
-    MarkerOptions mo;
-    Marker marker;
 
     private GoogleMap mMap;
 
@@ -84,12 +76,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initPesantrenData() {
-        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "-6.92746", "107.71706", ""));
-        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung", "-6.93760", "107.72246", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung", "-6.93972", "107.71205", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung", "-6.92775", "107.73265", ""));
-        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung", "-6.92937", "107.71878", ""));
-        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707", "107.72376", ""));
+        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "08226227436","-6.92746", "107.71706", ""));
+        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung","08988190546", "-6.93760", "107.72246", ""));
+        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung","08965552374", "-6.93972", "107.71205", ""));
+        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung","0857826893", "-6.92775", "107.73265", ""));
+        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung","0899471774", "-6.92937", "107.71878", ""));
+        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707","08787765473", "107.72376", ""));
     }
 
     private void initMapFragment() {
@@ -159,7 +151,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         LatLng lokasiMember = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
 //        mo = new MarkerOptions().position(lokasiMember).title("Lokasi saya").icon(BitmapDescriptorFactory.fromBitmap(smallMarkerMine));
 //        marker = mMap.addMarker(mo);
@@ -228,6 +220,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if(marker.getTitle().equalsIgnoreCase(pesantren.getNamaPesantren())){
                         Intent intent = new Intent(MapsActivity.this, DetailPesantrenActivity.class);
                         intent.putExtra("pesantren", pesantren);
+                        intent.putExtra("my_location", myLocation);
                         startActivity(intent);
                         break;
                     }

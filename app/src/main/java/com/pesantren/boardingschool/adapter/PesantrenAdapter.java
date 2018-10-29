@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
-import com.pesantren.boardingschool.activity.DetailPesantrenActivity;
+import com.pesantren.boardingschool.activity.maps.DetailPesantrenActivity;
 import com.pesantren.boardingschool.model.Pesantren;
 
 import java.math.BigDecimal;
@@ -73,6 +73,7 @@ public class PesantrenAdapter extends RecyclerView.Adapter<PesantrenAdapter.View
             public void onClick(View v) {
                 Intent i = new Intent(context, DetailPesantrenActivity.class);
                 i.putExtra("pesantren", pesantren);
+                i.putExtra("my_location", myLocation);
                 context.startActivity(i);
             }
         });
