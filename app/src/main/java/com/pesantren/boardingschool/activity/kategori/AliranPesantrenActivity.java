@@ -9,9 +9,8 @@ import android.view.MenuItem;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.adapter.AliranAdapter;
-import com.pesantren.boardingschool.model.Pesantren;
+import com.pesantren.boardingschool.model.data.Aliran;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class AliranPesantrenActivity extends AppCompatActivity  {
     SearchView searchView;
 
     private AliranAdapter mAdapter;
-    List<String> listAliran = new ArrayList<>();
+    List<Aliran> listAliran = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,9 @@ public class AliranPesantrenActivity extends AppCompatActivity  {
     }
 
     private void initAliranData() {
-        listAliran.add("NU");
-        listAliran.add("Muhammadiyah");
-        listAliran.add("Persis");
+        listAliran.add(new Aliran("1","NU"));
+        listAliran.add(new Aliran("9","Muhammadiyah"));
+        listAliran.add(new Aliran("2","Persis"));
     }
 
     private void initRecyclerView() {

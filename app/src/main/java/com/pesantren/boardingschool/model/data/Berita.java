@@ -1,4 +1,4 @@
-package com.pesantren.boardingschool.model;
+package com.pesantren.boardingschool.model.data;
 
 import java.io.Serializable;
 

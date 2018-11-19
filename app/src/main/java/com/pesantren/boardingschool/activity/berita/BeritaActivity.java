@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.adapter.BeritaAdapter;
-import com.pesantren.boardingschool.model.Berita;
+import com.pesantren.boardingschool.model.data.Berita;
 
 import java.util.ArrayList;
 import java.util.List;

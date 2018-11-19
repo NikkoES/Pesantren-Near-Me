@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,12 +40,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.pesantren.boardingschool.R;
-import com.pesantren.boardingschool.model.Pesantren;
+import com.pesantren.boardingschool.activity.kategori.LokasiPesantrenActivity;
+import com.pesantren.boardingschool.adapter.PesantrenAdapter;
+import com.pesantren.boardingschool.api.BaseApiService;
+import com.pesantren.boardingschool.api.UtilsApi;
+import com.pesantren.boardingschool.model.data.Pesantren;
+import com.pesantren.boardingschool.model.response.ResponsePesantren;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
@@ -58,6 +67,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private UiSettings mUiSettings;
 
+    BaseApiService apiService;
+
     List<Pesantren> listPesantren = new ArrayList<>();
 
     SharedPreferences pref;
@@ -69,6 +80,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
 
+        apiService = UtilsApi.getAPIService();
+
         ButterKnife.bind(this);
         initToolbar();
         initPesantrenData();
@@ -76,12 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initPesantrenData() {
-        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "08226227436","-6.92746", "107.71706", ""));
-        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung","08988190546", "-6.93760", "107.72246", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung","08965552374", "-6.93972", "107.71205", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung","0857826893", "-6.92775", "107.73265", ""));
-        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung","0899471774", "-6.92937", "107.71878", ""));
-        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707","08787765473", "107.72376", ""));
+
     }
 
     private void initMapFragment() {
@@ -105,8 +113,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home : {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
                 finish();
                 break;
             }
@@ -141,9 +149,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bitmap bPersis = bitPersis.getBitmap();
         Bitmap bMuhammadiyah = bitMu.getBitmap();
         Bitmap bMine = bitMine.getBitmap();
-        Bitmap smallMarkerNu = Bitmap.createScaledBitmap(bNU, width, height, false);
-        Bitmap smallMarkerPersis = Bitmap.createScaledBitmap(bPersis, width, height, false);
-        Bitmap smallMarkerMuhammadiyah = Bitmap.createScaledBitmap(bMuhammadiyah, width, height, false);
+        final Bitmap smallMarkerNu = Bitmap.createScaledBitmap(bNU, width, height, false);
+        final Bitmap smallMarkerPersis = Bitmap.createScaledBitmap(bPersis, width, height, false);
+        final Bitmap smallMarkerMuhammadiyah = Bitmap.createScaledBitmap(bMuhammadiyah, width, height, false);
         Bitmap smallMarkerMine = Bitmap.createScaledBitmap(bMine, width, height, false);
 
         //init my location
@@ -152,79 +160,93 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         final Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        LatLng lokasiMember = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+        LatLng lokasiMember = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 //        mo = new MarkerOptions().position(lokasiMember).title("Lokasi saya").icon(BitmapDescriptorFactory.fromBitmap(smallMarkerMine));
 //        marker = mMap.addMarker(mo);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(lokasiMember).zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        for (int i=0;i<listPesantren.size();i++) {
-            final Pesantren pesantren = listPesantren.get(i);
-
-            Location pesantrenLocation = new Location("");
-            pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLatitude()));
-            pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLongitude()));
-
-            float distance = myLocation.distanceTo(pesantrenLocation);
-            float radius = pref.getInt("radius",10000);
-
-            if(distance < radius){
-                LatLng lokasiPesantren = new LatLng(Double.parseDouble(pesantren.getLatitude()), Double.parseDouble(pesantren.getLongitude()));
-                if(pesantren.getAliran().equalsIgnoreCase("NU")){
-                    mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNamaPesantren()).snippet("Aliran : " + pesantren.getAliran() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerNu)));
-                }
-                else if(pesantren.getAliran().equalsIgnoreCase("Persis")){
-                    mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNamaPesantren()).snippet("Aliran : " + pesantren.getAliran() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerPersis)));
-                }
-                else if(pesantren.getAliran().equalsIgnoreCase("Muhammadiyah")){
-                    mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNamaPesantren()).snippet("Aliran : " + pesantren.getAliran() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerMuhammadiyah)));
-                }
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                    @Override
-                    public View getInfoWindow(Marker arg0) {
-                        return null;
-                    }
-
-                    @Override
-                    public View getInfoContents(Marker marker) {
-
-                        LinearLayout info = new LinearLayout(getApplicationContext());
-                        info.setOrientation(LinearLayout.VERTICAL);
-
-                        TextView title = new TextView(getApplicationContext());
-                        title.setTextColor(Color.BLACK);
-                        title.setGravity(Gravity.CENTER);
-                        title.setTypeface(null, Typeface.BOLD);
-                        title.setText(marker.getTitle());
-
-                        TextView snippet = new TextView(getApplicationContext());
-                        snippet.setTextColor(Color.GRAY);
-                        snippet.setGravity(Gravity.CENTER);
-                        snippet.setText(marker.getSnippet());
-
-                        info.addView(title);
-                        info.addView(snippet);
-
-                        return info;
-                    }
-                });
-            }
-        }
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        apiService.getAllPesantren().enqueue(new Callback<ResponsePesantren>() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
-                for(int i=0; i<listPesantren.size(); i++){
-                    Pesantren pesantren = listPesantren.get(i);
-                    if(marker.getTitle().equalsIgnoreCase(pesantren.getNamaPesantren())){
-                        Intent intent = new Intent(MapsActivity.this, DetailPesantrenActivity.class);
-                        intent.putExtra("pesantren", pesantren);
-                        intent.putExtra("my_location", myLocation);
-                        startActivity(intent);
-                        break;
+            public void onResponse(Call<ResponsePesantren> call, Response<ResponsePesantren> response) {
+                if (response.isSuccessful()) {
+                    listPesantren = response.body().getPondokPesantren();
+
+                    for (int i = 0; i < listPesantren.size(); i++) {
+                        final Pesantren pesantren = listPesantren.get(i);
+
+                        Location pesantrenLocation = new Location("");
+                        pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLat()));
+                        pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLng()));
+
+                        float distance = myLocation.distanceTo(pesantrenLocation);
+                        float radius = pref.getInt("radius", 10000);
+
+                        if (distance < radius) {
+                            LatLng lokasiPesantren = new LatLng(Double.parseDouble(pesantren.getLat()), Double.parseDouble(pesantren.getLng()));
+                            if (pesantren.getKategori().equalsIgnoreCase("1")) {
+                                mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNama()).snippet("Aliran : " + pesantren.getKategori() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerNu)));
+                            } else if (pesantren.getKategori().equalsIgnoreCase("2")) {
+                                mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNama()).snippet("Aliran : " + pesantren.getKategori() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerPersis)));
+                            } else if (pesantren.getKategori().equalsIgnoreCase("9")) {
+                                mMap.addMarker(new MarkerOptions().position(lokasiPesantren).title(pesantren.getNama()).snippet("Aliran : " + pesantren.getKategori() + "\n" + pesantren.getAlamat()).icon(BitmapDescriptorFactory.fromBitmap(smallMarkerMuhammadiyah)));
+                            }
+                            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                                @Override
+                                public View getInfoWindow(Marker arg0) {
+                                    return null;
+                                }
+
+                                @Override
+                                public View getInfoContents(Marker marker) {
+
+                                    LinearLayout info = new LinearLayout(getApplicationContext());
+                                    info.setOrientation(LinearLayout.VERTICAL);
+
+                                    TextView title = new TextView(getApplicationContext());
+                                    title.setTextColor(Color.BLACK);
+                                    title.setGravity(Gravity.CENTER);
+                                    title.setTypeface(null, Typeface.BOLD);
+                                    title.setText(marker.getTitle());
+
+                                    TextView snippet = new TextView(getApplicationContext());
+                                    snippet.setTextColor(Color.GRAY);
+                                    snippet.setGravity(Gravity.CENTER);
+                                    snippet.setText(marker.getSnippet());
+
+                                    info.addView(title);
+                                    info.addView(snippet);
+
+                                    return info;
+                                }
+                            });
+                        }
                     }
+
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            for (int i = 0; i < listPesantren.size(); i++) {
+                                Pesantren pesantren = listPesantren.get(i);
+                                if (marker.getTitle().equalsIgnoreCase(pesantren.getNama())) {
+                                    Intent intent = new Intent(MapsActivity.this, DetailPesantrenActivity.class);
+                                    intent.putExtra("pesantren", pesantren);
+                                    intent.putExtra("my_location", myLocation);
+                                    startActivity(intent);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(MapsActivity.this, "Data menu tidak ditemukan !", Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(Call<ResponsePesantren> call, Throwable t) {
+                Toast.makeText(MapsActivity.this, "Failed to Connect Internet !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -245,6 +267,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         locationManager.requestLocationUpdates(provider, 10000, 10, this);
     }
+
     private boolean isLocationEnabled() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);

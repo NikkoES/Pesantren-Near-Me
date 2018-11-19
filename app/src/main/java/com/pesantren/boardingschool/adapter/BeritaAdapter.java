@@ -1,10 +1,7 @@
 package com.pesantren.boardingschool.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.Location;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +12,8 @@ import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.activity.berita.DetailBeritaActivity;
-import com.pesantren.boardingschool.activity.maps.DetailPesantrenActivity;
-import com.pesantren.boardingschool.model.Berita;
-import com.pesantren.boardingschool.model.Pesantren;
+import com.pesantren.boardingschool.model.data.Berita;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import butterknife.BindView;

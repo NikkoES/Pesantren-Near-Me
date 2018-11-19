@@ -2,35 +2,36 @@ package com.pesantren.boardingschool.activity.kategori;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
 import com.pesantren.boardingschool.R;
-import com.pesantren.boardingschool.adapter.AliranAdapter;
 import com.pesantren.boardingschool.adapter.PesantrenAdapter;
-import com.pesantren.boardingschool.model.Pesantren;
+import com.pesantren.boardingschool.api.BaseApiService;
+import com.pesantren.boardingschool.api.UtilsApi;
+import com.pesantren.boardingschool.model.data.Pesantren;
+import com.pesantren.boardingschool.model.response.ResponsePesantren;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LokasiPesantrenActivity extends AppCompatActivity {
 
@@ -49,12 +50,15 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
 
     SharedPreferences pref;
 
+    BaseApiService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lokasi_pesantren);
 
         pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        apiService = UtilsApi.getAPIService();
 
         ButterKnife.bind(this);
         initToolbar();
@@ -88,27 +92,40 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
     }
 
     private void initPesantrenData() {
-        listPesantren.add(new Pesantren("Mahad Universal", "NU", "Cipadung, Bandung", "08226227436", "-6.92746", "107.71706", ""));
-        listPesantren.add(new Pesantren("Pesantren Al-Ihsan", "NU", "Cinunuk, Bandung", "08988190546", "-6.93760", "107.72246", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis I", "Persis", "Ujung Berung, Bandung", "08965552374", "-6.93972", "107.71205", ""));
-        listPesantren.add(new Pesantren("Pesantren Persis II", "Persis", "Cilengkrang, Bandung", "0857826893", "-6.92775", "107.73265", ""));
-        listPesantren.add(new Pesantren("Mahad Al-Jamiah", "Muhammadiyah", "Cipadung, Bandung", "0899471774", "-6.92937", "107.71878", ""));
-        listPesantren.add(new Pesantren("Pesanten Al-Hidayah", "NU", "Manisi, Bandung", "-6.92707", "08787765473", "107.72376", ""));
+        apiService.getAllPesantren().enqueue(new Callback<ResponsePesantren>() {
+            @Override
+            public void onResponse(Call<ResponsePesantren> call, Response<ResponsePesantren> response) {
+                if (response.isSuccessful()) {
+                    listPesantren = response.body().getPondokPesantren();
 
-        for (int i = 0; i < listPesantren.size(); i++) {
-            final Pesantren pesantren = listPesantren.get(i);
+                    for (int i = 0; i < listPesantren.size(); i++) {
+                        final Pesantren pesantren = listPesantren.get(i);
 
-            Location pesantrenLocation = new Location("");
-            pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLatitude()));
-            pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLongitude()));
+                        Location pesantrenLocation = new Location("");
+                        pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLat()));
+                        pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLng()));
 
-            float distance = myLocation.distanceTo(pesantrenLocation);
-            float radius = pref.getInt("radius", 10000);
+                        float distance = myLocation.distanceTo(pesantrenLocation);
+                        float radius = pref.getInt("radius", 10000);
 
-            if (listPesantren.get(i).getAliran().equalsIgnoreCase(getIntent().getStringExtra("aliran")) && distance < radius) {
-                listAliranPesantren.add(listPesantren.get(i));
+                        if (listPesantren.get(i).getKategori().equalsIgnoreCase(getIntent().getStringExtra("aliran")) && distance < radius) {
+                            listAliranPesantren.add(listPesantren.get(i));
+                        }
+                    }
+
+                    rvPesantren.setAdapter(new PesantrenAdapter(LokasiPesantrenActivity.this, listAliranPesantren, myLocation));
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(LokasiPesantrenActivity.this, "Data menu tidak ditemukan !", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<ResponsePesantren> call, Throwable t) {
+                Toast.makeText(LokasiPesantrenActivity.this, "Failed to Connect Internet !", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initToolbar() {

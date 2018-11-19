@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
-import com.pesantren.boardingschool.model.Berita;
+import com.pesantren.boardingschool.model.data.Berita;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

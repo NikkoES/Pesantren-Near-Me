@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.activity.kategori.LokasiPesantrenActivity;
+import com.pesantren.boardingschool.model.data.Aliran;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ import butterknife.ButterKnife;
 public class AliranAdapter extends RecyclerView.Adapter<AliranAdapter.ViewHolder>{
 
     private Context context;
-    private List<String> listAliran;
+    private List<Aliran> listAliran;
 
-    public AliranAdapter(Context context, List<String> listAliran){
+    public AliranAdapter(Context context, List<Aliran> listAliran){
         this.context = context;
         this.listAliran = listAliran;
     }
@@ -39,13 +40,13 @@ public class AliranAdapter extends RecyclerView.Adapter<AliranAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final String aliran = listAliran.get(position);
-        holder.txtAliran.setText(aliran);
+        final Aliran aliran = listAliran.get(position);
+        holder.txtAliran.setText(aliran.getNamaAliran());
         holder.cvAliran.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, LokasiPesantrenActivity.class);
-                i.putExtra("aliran", aliran);
+                i.putExtra("aliran", aliran.getAliran());
                 context.startActivity(i);
             }
         });

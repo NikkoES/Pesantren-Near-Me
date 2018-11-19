@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.activity.maps.DetailPesantrenActivity;
-import com.pesantren.boardingschool.model.Pesantren;
+import com.pesantren.boardingschool.model.data.Pesantren;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -52,20 +52,19 @@ public class PesantrenAdapter extends RecyclerView.Adapter<PesantrenAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Pesantren pesantren = listPesantren.get(position);
-        holder.txtNamaPesantren.setText(pesantren.getNamaPesantren());
+        holder.txtNamaPesantren.setText(pesantren.getNama());
 
         Location pesantrenLocation = new Location("");
-        pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLatitude()));
-        pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLongitude()));
+        pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLat()));
+        pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLng()));
 
         float distanceHarversine = convertTwo(calculateHarversine(myLocation.getLatitude(), myLocation.getLongitude(),
-                Double.parseDouble(pesantren.getLatitude()), Double.parseDouble(pesantren.getLongitude())));
+                Double.parseDouble(pesantren.getLat()), Double.parseDouble(pesantren.getLng())));
         float distanceEuclidean = convertTwo(myLocation.distanceTo(pesantrenLocation) / 1000);
 
-        if(pref.getBoolean("distance", true)){
+        if (pref.getBoolean("distance", true)) {
             holder.txtJarakPesantren.setText(distanceEuclidean + " km | " + distanceHarversine + " km");
-        }
-        else{
+        } else {
             holder.txtJarakPesantren.setText(convertTwo((float) (distanceEuclidean * 0.621371)) + " mil | " + convertTwo((float) (distanceHarversine * 0.621371)) + " mil");
         }
         holder.cvPesantren.setOnClickListener(new View.OnClickListener() {
