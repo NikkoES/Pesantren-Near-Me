@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.model.data.Berita;
 
@@ -20,6 +21,8 @@ public class DetailBeritaActivity extends AppCompatActivity {
     TextView txtJudul;
     @BindView(R.id.txt_konten_berita)
     TextView txtKonten;
+    @BindView(R.id.txt_penulis_berita)
+    TextView txtPenulisBerita;
     @BindView(R.id.txt_tanggal_berita)
     TextView txtTanggal;
 
@@ -44,9 +47,10 @@ public class DetailBeritaActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        //TODO image belum di set pake glide
+        Glide.with(getApplicationContext()).load(berita.getGambar()).into(imageBerita);
         txtJudul.setText(berita.getJudul());
-        txtKonten.setText(berita.getKonten());
+        txtKonten.setText(berita.getIsi());
+        txtPenulisBerita.setText(berita.getPenulis());
         txtTanggal.setText(berita.getTanggal());
     }
 

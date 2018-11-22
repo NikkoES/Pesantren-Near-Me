@@ -64,8 +64,13 @@ public class LokasiPesantrenActivity extends AppCompatActivity {
         initToolbar();
         initSearchView();
         initLocation();
-        initPesantrenData();
         initRecyclerView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initPesantrenData();
     }
 
     private void initSearchView() {

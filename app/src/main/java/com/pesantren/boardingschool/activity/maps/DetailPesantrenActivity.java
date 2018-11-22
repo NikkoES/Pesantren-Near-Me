@@ -14,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,6 +38,8 @@ import butterknife.OnClick;
 
 public class DetailPesantrenActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    @BindView(R.id.image_pesantren)
+    ImageView imagePesantren;
     @BindView(R.id.txt_alamat)
     TextView txtAlamat;
     @BindView(R.id.txt_kontak)
@@ -74,6 +78,7 @@ public class DetailPesantrenActivity extends AppCompatActivity implements OnMapR
     }
 
     private void initUI() {
+        Glide.with(getApplicationContext()).load(pesantren.getGambar()).into(imagePesantren);
         Location pesantrenLocation = new Location("");
         pesantrenLocation.setLatitude(Double.parseDouble(pesantren.getLat()));
         pesantrenLocation.setLongitude(Double.parseDouble(pesantren.getLng()));

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.activity.maps.DetailPesantrenActivity;
 import com.pesantren.boardingschool.model.data.Pesantren;
@@ -52,6 +53,7 @@ public class PesantrenAdapter extends RecyclerView.Adapter<PesantrenAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Pesantren pesantren = listPesantren.get(position);
+        Glide.with(context).load(pesantren.getGambar()).into(holder.imagePesantren);
         holder.txtNamaPesantren.setText(pesantren.getNama());
 
         Location pesantrenLocation = new Location("");

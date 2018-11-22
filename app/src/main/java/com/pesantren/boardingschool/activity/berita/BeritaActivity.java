@@ -1,20 +1,32 @@
 package com.pesantren.boardingschool.activity.berita;
 
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.pesantren.boardingschool.R;
+import com.pesantren.boardingschool.activity.kategori.LokasiPesantrenActivity;
 import com.pesantren.boardingschool.adapter.BeritaAdapter;
+import com.pesantren.boardingschool.adapter.PesantrenAdapter;
+import com.pesantren.boardingschool.api.BaseApiService;
+import com.pesantren.boardingschool.api.UtilsApi;
 import com.pesantren.boardingschool.model.data.Berita;
+import com.pesantren.boardingschool.model.data.Pesantren;
+import com.pesantren.boardingschool.model.response.ResponseBerita;
+import com.pesantren.boardingschool.model.response.ResponsePesantren;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BeritaActivity extends AppCompatActivity {
 
@@ -25,11 +37,15 @@ public class BeritaActivity extends AppCompatActivity {
 
     List<Berita> listBerita = new ArrayList<>();
 
+    BaseApiService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_berita);
         ButterKnife.bind(this);
+
+        apiService = UtilsApi.getAPIService();
 
         initToolbar();
         initBeritaData();
@@ -43,11 +59,31 @@ public class BeritaActivity extends AppCompatActivity {
         rvPesantren.setAdapter(mAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initBeritaData();
+    }
+
     private void initBeritaData() {
-        listBerita.add(new Berita("Judul Berita I", "ini konten berita ke 1", "01 Oktober 2018", ""));
-        listBerita.add(new Berita("Judul Berita II", "ini konten berita ke 2", "02 Oktober 2018", ""));
-        listBerita.add(new Berita("Judul Berita III", "ini konten berita ke 3", "03 Oktober 2018", ""));
-        listBerita.add(new Berita("Judul Berita IV", "ini konten berita ke 4", "04 Oktober 2018", ""));
+        apiService.getAllBerita().enqueue(new Callback<ResponseBerita>() {
+            @Override
+            public void onResponse(Call<ResponseBerita> call, Response<ResponseBerita> response) {
+                if (response.isSuccessful()) {
+                    listBerita = response.body().getListBerita();
+
+                    rvPesantren.setAdapter(new BeritaAdapter(BeritaActivity.this, listBerita));
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(BeritaActivity.this, "Data menu tidak ditemukan !", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBerita> call, Throwable t) {
+                Toast.makeText(BeritaActivity.this, "Failed to Connect Internet !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initToolbar() {

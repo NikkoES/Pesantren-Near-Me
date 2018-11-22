@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pesantren.boardingschool.R;
 import com.pesantren.boardingschool.activity.berita.DetailBeritaActivity;
 import com.pesantren.boardingschool.model.data.Berita;
@@ -42,6 +43,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Berita berita = listBerita.get(position);
+        Glide.with(context).load(berita.getGambar()).into(holder.imageBerita);
         holder.txtJudulBerita.setText(berita.getJudul());
         holder.txtTanggalBerita.setText(berita.getTanggal());
         holder.cvBerita.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +60,6 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
     public int getItemCount() {
         return listBerita.size();
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
