@@ -14,6 +14,7 @@
             android:id="@+id/image_berita"
             android:layout_width="match_parent"
             android:layout_height="180dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_apps"/>
 
         <android.support.v7.widget.CardView
